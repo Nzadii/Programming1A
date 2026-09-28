@@ -10,4 +10,5 @@
         <maven.compiler.release>26</maven.compiler.release>
         <exec.mainClass>com.mycompany.programing1a.PROGRAMING1A</exec.mainClass>
     </properties>
+    <name>programing1a</name>
 </project>

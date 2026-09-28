@@ -1,5 +1,5 @@
 
-package com.mycompany.programming1a;
+package com.mycompany.programing1a;
 
 public class Login {
 
