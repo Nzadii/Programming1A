@@ -56,7 +56,7 @@ public class Login {
     }
 
     public boolean checkCellPhoneNumber() {
-
+// Regex validates a South African international cellphone number.
         String phoneRegex = "^\\+27\\d{9}$";
 
         return cellPhoneNumber != null
