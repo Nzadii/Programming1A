@@ -78,6 +78,11 @@ public class PROGRAMING1A {
             System.out.println(
                     login.returnLoginStatus(loginSuccessful)
             );
+
+            // Part 2: messages can only be sent after a successful login
+            if (loginSuccessful) {
+                QuickChat.start(scanner);
+            }
         }
 
         scanner.close();
