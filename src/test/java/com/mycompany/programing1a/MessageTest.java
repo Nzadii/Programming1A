@@ -5,20 +5,28 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// Part 2 unit tests
 public class MessageTest {
 
     // Fixed ID so the hash starts with "00", matching the test data
     private static final String FIXED_ID = "0012345678";
 
+    private File tempJson;
     private Message msg1; // Test Data for Message 1: Send
     private Message msg2; // Test Data for Message 2: Disregard
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws IOException {
+        // Use a temporary JSON file so the tests never touch the real messages.json
+        tempJson = File.createTempFile("quickchat-test", ".json");
+        tempJson.delete();
+        Message.setJsonFile(tempJson.getAbsolutePath());
         Message.resetState();
+
         msg1 = new Message(FIXED_ID, 0, "+27718693002",
                 "Hi Mike, can you join us for dinner tonight?");
         msg2 = new Message(FIXED_ID, 1, "08575975889",
@@ -27,7 +35,9 @@ public class MessageTest {
 
     @AfterEach
     void cleanUp() {
-        new File(Message.JSON_FILE).delete();
+        tempJson.delete();
+        Message.setJsonFile("messages.json");
+        Message.resetState();
     }
 
     // ---------- Message length ----------
@@ -97,7 +107,7 @@ public class MessageTest {
     @Test
     void messageStored() {
         assertEquals("Message successfully stored.", msg1.sentMessage(3));
-        assertTrue(new File(Message.JSON_FILE).exists());
+        assertTrue(tempJson.exists());
     }
 
     // ---------- Totals / printing ----------

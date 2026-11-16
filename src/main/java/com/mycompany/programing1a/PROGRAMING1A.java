@@ -81,7 +81,7 @@ public class PROGRAMING1A {
 
             // Part 2: messages can only be sent after a successful login
             if (loginSuccessful) {
-                QuickChat.start(scanner);
+                QuickChat.start(scanner, firstName + " " + lastName);
             }
         }
 
