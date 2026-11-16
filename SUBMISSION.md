@@ -38,3 +38,11 @@ Cell phone: +27838968976
 ### Part 2
 Message 1: +27718693002, "Hi Mike, can you join us for dinner tonight?" (Send)  
 Message 2: 08575975889 (rejected, no international code), then a valid number, "Hi Keegan, did you receive the payment?" (Disregard)
+
+### Part 3: Arrays and Stored Messages
+- Arrays for sent, disregarded and stored messages, message hashes and message IDs
+- Stored messages read from the JSON file into an array
+- Stored Messages menu: sender and recipient, longest message, search by message ID, search by recipient, delete by message hash, full report
+- 27 JUnit unit tests, all passing
+- GitHub Actions CI runs the tests on every push
+- Work done on a feature branch and merged into `main` through a pull request
