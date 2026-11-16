@@ -1,11 +1,12 @@
 package com.mycompany.programing1a;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class QuickChat {
 
     // Called from PROGRAMING1A.main() once the user has logged in successfully
-    public static void start(Scanner sc) {
+    public static void start(Scanner sc, String senderName) {
 
         System.out.println();
         System.out.println("Welcome to QuickChat.");
@@ -20,6 +21,7 @@ public class QuickChat {
             System.out.println("1) Send Messages");
             System.out.println("2) Show recently sent messages");
             System.out.println("3) Quit");
+            System.out.println("4) Stored Messages");
             System.out.print("Choose an option: ");
             String option = sc.nextLine().trim();
 
@@ -39,18 +41,88 @@ public class QuickChat {
                             + Message.returnTotalMessages());
                     break;
                 case "2":
-                    System.out.println("Coming Soon.");
+                    System.out.println();
+                    System.out.println(Message.printMessages());
                     break;
                 case "3":
                     System.out.println("Goodbye!");
                     running = false;
                     break;
+                case "4":
+                    storedMessagesMenu(sc, senderName);
+                    break;
                 default:
-                    System.out.println("Invalid option, please choose 1, 2 or 3.");
+                    System.out.println("Invalid option, please choose 1, 2, 3 or 4.");
             }
         }
     }
 
+    // ---------- Part 3: Stored Messages menu ----------
+    private static void storedMessagesMenu(Scanner sc, String senderName) {
+
+        // Read the JSON file into the Stored Messages array
+        Message.loadStoredMessages();
+
+        boolean back = false;
+        while (!back) {
+            System.out.println();
+            System.out.println("--- Stored Messages ---");
+            System.out.println("1) Display the sender and recipient of all stored messages");
+            System.out.println("2) Display the longest stored message");
+            System.out.println("3) Search for a message ID");
+            System.out.println("4) Search for all messages sent or stored for a recipient");
+            System.out.println("5) Delete a message using the message hash");
+            System.out.println("6) Display a report of all stored messages");
+            System.out.println("0) Back to the main menu");
+            System.out.print("Choose an option: ");
+            String option = sc.nextLine().trim();
+
+            switch (option) {
+                case "1":
+                    System.out.println(Message.displaySenderAndRecipient(senderName));
+                    break;
+                case "2":
+                    System.out.println("Longest stored message: "
+                            + Message.longestStoredMessage());
+                    break;
+                case "3":
+                    System.out.print("Enter the message ID: ");
+                    Message found = Message.findByMessageID(sc.nextLine().trim());
+                    if (found == null) {
+                        System.out.println("Message ID not found.");
+                    } else {
+                        System.out.println("Recipient: " + found.getRecipient());
+                        System.out.println("Message: " + found.getText());
+                    }
+                    break;
+                case "4":
+                    System.out.print("Enter the recipient's cell number: ");
+                    List<String> results = Message.searchByRecipient(sc.nextLine().trim());
+                    if (results.isEmpty()) {
+                        System.out.println("No messages found for that recipient.");
+                    } else {
+                        for (String text : results) {
+                            System.out.println("\"" + text + "\"");
+                        }
+                    }
+                    break;
+                case "5":
+                    System.out.print("Enter the message hash: ");
+                    System.out.println(Message.deleteByHash(sc.nextLine().trim()));
+                    break;
+                case "6":
+                    System.out.println(Message.storedMessagesReport());
+                    break;
+                case "0":
+                    back = true;
+                    break;
+                default:
+                    System.out.println("Invalid option, please choose 0 to 6.");
+            }
+        }
+    }
+
+    // ---------- Part 2: sending a message ----------
     private static void processMessage(Scanner sc, int messageNumber) {
         System.out.println();
         System.out.println("--- Message " + (messageNumber + 1) + " ---");
